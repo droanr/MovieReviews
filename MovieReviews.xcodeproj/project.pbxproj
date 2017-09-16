@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		685CBA831F6B918A00F37383 /* MovieDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685CBA821F6B918A00F37383 /* MovieDetailsViewController.swift */; };
+		685CBA851F6B9B4E00F37383 /* MovieDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685CBA841F6B9B4E00F37383 /* MovieDetails.swift */; };
 		686EAA521F6A38AF00F32E36 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686EAA511F6A38AF00F32E36 /* AppDelegate.swift */; };
 		686EAA571F6A38AF00F32E36 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 686EAA551F6A38AF00F32E36 /* Main.storyboard */; };
 		686EAA591F6A38AF00F32E36 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 686EAA581F6A38AF00F32E36 /* Assets.xcassets */; };
@@ -18,6 +20,8 @@
 
 /* Begin PBXFileReference section */
 		0AA38DBBCE25291C21AE0C99 /* Pods-MovieReviews.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieReviews.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MovieReviews/Pods-MovieReviews.debug.xcconfig"; sourceTree = "<group>"; };
+		685CBA821F6B918A00F37383 /* MovieDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieDetailsViewController.swift; sourceTree = "<group>"; };
+		685CBA841F6B9B4E00F37383 /* MovieDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieDetails.swift; sourceTree = "<group>"; };
 		686EAA4E1F6A38AF00F32E36 /* MovieReviews.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieReviews.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		686EAA511F6A38AF00F32E36 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		686EAA561F6A38AF00F32E36 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -86,6 +90,7 @@
 			isa = PBXGroup;
 			children = (
 				686EAA661F6B80A700F32E36 /* MovieCell.swift */,
+				685CBA841F6B9B4E00F37383 /* MovieDetails.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -94,6 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				686EAA631F6A391500F32E36 /* MoviesViewController.swift */,
+				685CBA821F6B918A00F37383 /* MovieDetailsViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -142,6 +148,7 @@
 				TargetAttributes = {
 					686EAA4D1F6A38AF00F32E36 = {
 						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = 7BFULV8CN5;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -236,8 +243,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				685CBA831F6B918A00F37383 /* MovieDetailsViewController.swift in Sources */,
 				686EAA521F6A38AF00F32E36 /* AppDelegate.swift in Sources */,
 				686EAA641F6A391500F32E36 /* MoviesViewController.swift in Sources */,
+				685CBA851F6B9B4E00F37383 /* MovieDetails.swift in Sources */,
 				686EAA671F6B80A700F32E36 /* MovieCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -362,6 +371,7 @@
 			baseConfigurationReference = 0AA38DBBCE25291C21AE0C99 /* Pods-MovieReviews.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 7BFULV8CN5;
 				INFOPLIST_FILE = MovieReviews/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.droan.MovieReviews;
@@ -375,6 +385,7 @@
 			baseConfigurationReference = E0C1005004CA33A30A77574C /* Pods-MovieReviews.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 7BFULV8CN5;
 				INFOPLIST_FILE = MovieReviews/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.droan.MovieReviews;
@@ -402,6 +413,7 @@
 				686EAA621F6A38AF00F32E36 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

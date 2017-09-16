@@ -67,7 +67,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         let baseUrl = "https://image.tmdb.org/t/p/w500/"
         let posterUrl = NSURL(string: baseUrl+posterPath)
         
-        cell.posterView.setImageWith(posterUrl! as URL)
+        cell.posterView.setImageWith(posterUrl as! URL)        
         print ("Row \(indexPath.row)")
         return cell
     }
@@ -75,6 +75,17 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showMovieDetailsSegue" {
+            let cell = sender as! MovieCell
+            if let indexPath = movieTableView.indexPath(for: cell) {
+                let movieDetailsController = segue.destination as! MovieDetailsViewController
+                movieDetailsController.movie = (self.movies?[indexPath.row])!
+                movieTableView.deselectRow(at: indexPath, animated: true)
+            }
+        }
     }
     
 
