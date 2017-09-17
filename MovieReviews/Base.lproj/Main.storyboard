@@ -21,9 +21,23 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <view key="tableHeaderView" contentMode="scaleToFill" misplaced="YES" id="8hV-2W-RYy">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="24"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Network Error" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="y0Q-0f-dVa">
+                                            <rect key="frame" x="8" y="0.0" width="348" height="24"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                            <color key="textColor" red="0.97575765849999996" green="0.017647113650000001" blue="0.022955408319999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="highlightedColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                                </view>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="MovieCell" rowHeight="188" id="Ayq-C0-uL0" customClass="MovieCell" customModule="MovieReviews" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="414" height="188"/>
+                                        <rect key="frame" x="0.0" y="52" width="414" height="188"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ayq-C0-uL0" id="cNk-Uf-xen">
                                             <rect key="frame" x="0.0" y="0.0" width="381" height="187.5"/>
@@ -63,6 +77,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Flixy" id="Pc6-lB-sMC"/>
                     <connections>
+                        <outlet property="errorView" destination="8hV-2W-RYy" id="t0W-V3-2AA"/>
                         <outlet property="movieTableView" destination="eSC-ry-4Je" id="0bf-wi-4Ez"/>
                         <outlet property="parentView" destination="8bC-Xf-vdC" id="BC2-Yt-fki"/>
                     </connections>
