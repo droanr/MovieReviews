@@ -8,4 +8,5 @@ target 'MovieReviews' do
   # Pods for MovieReviews
   pod 'AFNetworking'
   pod 'MBProgressHUD'
+  pod 'Cosmos', '~> 11.0'
 end

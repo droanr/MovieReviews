@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Cosmos
 
 class MovieDetails: UIView {
 
@@ -14,6 +15,7 @@ class MovieDetails: UIView {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var overviewLabel: UILabel!
     @IBOutlet weak var releaseDateLabel: UILabel!
+    @IBOutlet weak var ratingLabel: CosmosView!
     /*
     // Only override draw() if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.

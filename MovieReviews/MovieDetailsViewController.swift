@@ -38,7 +38,9 @@ class MovieDetailsViewController: UIViewController {
         self.movieDetailsView.titleLabel.text = movie["title"] as? String
         self.movieDetailsView.releaseDateLabel.text = movie["release_date"] as? String
         self.movieDetailsView.overviewLabel.text = movie["overview"] as? String
-        
+        var rating = movie["vote_average"] as! Float
+        rating = rating / 2
+        self.movieDetailsView.ratingLabel.rating = Double(rating)
     }
 
     override func didReceiveMemoryWarning() {
