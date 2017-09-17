@@ -12,14 +12,16 @@ import MBProgressHUD
 import Foundation
 import SystemConfiguration
 
-class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
 
     @IBOutlet var parentView: UIView!
     @IBOutlet weak var movieTableView: UITableView!
     
     @IBOutlet weak var errorView: UIView!
     var movies: [NSDictionary]?
+    var filteredMovies: [NSDictionary]?
     var endpoint = NSString()
+    var searchBar: UISearchBar!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,6 +32,22 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         movieTableView.dataSource = self
         movieTableView.delegate = self
         errorView.isHidden = true
+        
+        self.searchBar = UISearchBar()
+        self.searchBar.sizeToFit()
+        self.searchBar.delegate = self
+        navigationItem.titleView = self.searchBar
+
+        let textFieldSearchBar = self.searchBar.value(forKey: "searchField") as? UITextField
+        textFieldSearchBar?.textColor = UIColor.red
+        textFieldSearchBar?.backgroundColor = UIColor.black
+        textFieldSearchBar?.tintColor = UIColor.red
+        textFieldSearchBar?.attributedPlaceholder = NSAttributedString(string: "Search for a movie",
+                                                               attributes: [NSForegroundColorAttributeName: UIColor.red])
+        let glassIconView = textFieldSearchBar?.leftView as? UIImageView
+        glassIconView?.image = glassIconView?.image?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        glassIconView?.tintColor = UIColor.red
+
         let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
         let url = URL(string: "https://api.themoviedb.org/3/movie/\(self.endpoint)?api_key=\(apiKey)")
         let request = URLRequest(url: url!)
@@ -38,6 +56,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
             delegate: nil,
             delegateQueue: OperationQueue.main
         )
+
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(refreshControlAction(_:)), for: UIControlEvents.valueChanged)
         movieTableView.insertSubview(refreshControl, at: 0)
@@ -48,7 +67,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                                                                 if let responseDictionary = try! JSONSerialization.jsonObject(
                                                                     with: data, options: []) as? NSDictionary {
                                                                     NSLog("response: \(responseDictionary)")
-                                                                    self.movies = responseDictionary["results"] as! [NSDictionary]
+                                                                    self.movies = responseDictionary["results"] as? [NSDictionary]
+                                                                    self.filteredMovies = responseDictionary["results"] as? [NSDictionary]
                                                                     self.movieTableView.reloadData()
                                                                     MBProgressHUD.hide(for: self.parentView, animated: true)
                                                                     
@@ -58,6 +78,19 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         })
         task.resume()
         
+    }
+
+    func searchBar(_ searchBar: UISearchBar, textDidChange textSearched: String)
+    {
+        self.filteredMovies = textSearched.isEmpty ? self.movies: self.movies?.filter{ (item: NSDictionary) -> Bool in
+            
+            title = item["title"] as! String
+            if title != nil {
+                return (title!.range(of: textSearched, options: .caseInsensitive, range: nil, locale: nil) != nil)
+            }
+            return false
+        }
+        self.movieTableView.reloadData()
     }
     
     func refreshControlAction(_ refreshControl: UIRefreshControl) {
@@ -106,8 +139,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let movie = movies {
-            return (movies?.count)!
+        if let movie = filteredMovies {
+            return (filteredMovies?.count)!
         } else {
             return 0
         }
@@ -116,7 +149,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MovieCell", for: indexPath) as! MovieCell
         
-        let movie = movies![indexPath.row]
+        let movie = filteredMovies![indexPath.row]
         let title = movie["title"] as! String
         let overview = movie["overview"] as! String
         let posterPath = movie["poster_path"] as! String
@@ -147,7 +180,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         cell.selectionStyle = .none
         return cell
     }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -158,13 +190,12 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
             let cell = sender as! MovieCell
             if let indexPath = movieTableView.indexPath(for: cell) {
                 let movieDetailsController = segue.destination as! MovieDetailsViewController
-                movieDetailsController.movie = (self.movies?[indexPath.row])!
+                movieDetailsController.movie = (self.filteredMovies?[indexPath.row])!
                 movieTableView.deselectRow(at: indexPath, animated: true)
             }
         }
     }
     
-
     /*
     // MARK: - Navigation
 
