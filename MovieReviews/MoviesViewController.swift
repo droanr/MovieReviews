@@ -8,9 +8,11 @@
 
 import UIKit
 import AFNetworking
+import MBProgressHUD
 
 class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
+    @IBOutlet var parentView: UIView!
     @IBOutlet weak var movieTableView: UITableView!
     
     var movies: [NSDictionary]?
@@ -30,6 +32,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
             delegateQueue: OperationQueue.main
         )
         
+        MBProgressHUD.showAdded(to: self.parentView, animated: true)
         let task: URLSessionDataTask = session.dataTask(with: request,
                                                         completionHandler: {(dataOrNil, response, error) in
                                                             if let data = dataOrNil {
@@ -37,7 +40,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                                                                     with: data, options: []) as? NSDictionary {
                                                                     NSLog("response: \(responseDictionary)")
                                                                     self.movies = responseDictionary["results"] as! [NSDictionary]
-                                                                    self.movieTableView.reloadData()            
+                                                                    self.movieTableView.reloadData()
+                                                                    MBProgressHUD.hide(for: self.parentView, animated: true)
                                                                 }
                                                             }
         })

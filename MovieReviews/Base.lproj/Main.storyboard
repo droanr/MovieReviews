@@ -64,6 +64,7 @@
                     <navigationItem key="navigationItem" title="Flixy" id="Pc6-lB-sMC"/>
                     <connections>
                         <outlet property="movieTableView" destination="eSC-ry-4Je" id="0bf-wi-4Ez"/>
+                        <outlet property="parentView" destination="8bC-Xf-vdC" id="BC2-Yt-fki"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
