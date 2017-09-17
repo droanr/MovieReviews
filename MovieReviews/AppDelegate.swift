@@ -16,6 +16,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        window = UIWindow(frame: UIScreen.main.bounds)
+        
+        let storyBoard = UIStoryboard(name:"Main", bundle:nil)
+        
+        // Root navigation controller for 'now playing'
+        let nowPlayingRootNavigationController = storyBoard.instantiateViewController(withIdentifier: "MoviesNavigationController") as! UINavigationController
+        let nowPlayingViewController = nowPlayingRootNavigationController.topViewController as! MoviesViewController
+        nowPlayingViewController.tabBarItem.title = "Now Playing"
+        nowPlayingViewController.endpoint = "now_playing"
+        nowPlayingViewController.tabBarItem.image = UIImage(named: "film-clap-board")
+
+        // Root navigation controller for 'top rated'
+        let topRatedNavigationController = storyBoard.instantiateViewController(withIdentifier: "MoviesNavigationController") as! UINavigationController
+        let topRatedViewController = topRatedNavigationController.topViewController as! MoviesViewController
+        topRatedViewController.tabBarItem.title = "Top Rated"
+        topRatedViewController.endpoint = "top_rated"
+        topRatedViewController.tabBarItem.image = UIImage(named: "star")
+        
+        // Set up the Tab Bar Controller to have two tabs
+        let tabBarController = UITabBarController()
+        tabBarController.viewControllers = [nowPlayingRootNavigationController, topRatedNavigationController]
+        tabBarController.tabBar.tintColor = UIColor.red
+        tabBarController.tabBar.barTintColor = UIColor.black
+        // Make the Tab Bar Controller the root view controller
+        window?.rootViewController = tabBarController
+        window?.makeKeyAndVisible()
+        
         return true
     }
 
