@@ -143,6 +143,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
             // do something for the failure condition
         })
         print ("Row \(indexPath.row)")
+        cell.selectionStyle = .none
         return cell
     }
 
