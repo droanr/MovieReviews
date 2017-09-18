@@ -36,11 +36,19 @@ class MovieDetailsViewController: UIViewController {
             // do something for the failure condition
         })
         self.movieDetailsView.titleLabel.text = movie["title"] as? String
-        self.movieDetailsView.releaseDateLabel.text = movie["release_date"] as? String
+        let releaseDate = movie["release_date"] as! String
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        let date = formatter.date(from: releaseDate)
+        formatter.dateStyle = DateFormatter.Style.long
+        let dateString = formatter.string(for: date)
+        
+        self.movieDetailsView.releaseDateLabel.text = dateString
         self.movieDetailsView.overviewLabel.text = movie["overview"] as? String
         var rating = movie["vote_average"] as! Float
         rating = rating / 2
         self.movieDetailsView.ratingLabel.rating = Double(rating)
+        self.movieDetailsView.ratingLabel.settings.updateOnTouch = false
     }
 
     override func didReceiveMemoryWarning() {

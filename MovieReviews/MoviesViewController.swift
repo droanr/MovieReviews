@@ -24,23 +24,10 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     var endpoint = NSString()
     var searchBar: UISearchBar!
     var gridView: Bool!
+    var internetAvailable: Bool!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if !isInternetAvailable() {
-            errorView.isHidden = false
-            return
-        }
-        //let margins = view.layoutMarginsGuide
-        
-        movieTableView.dataSource = self
-        movieTableView.delegate = self
-        movieCollectionView.dataSource = self
-        movieCollectionView.delegate = self
-        movieCollectionView.isHidden = true
-        //movieCollectionView.heightAnchor.constraint(equalTo: movieCollectionView.heightAnchor, multiplier: 0).constant = 0
-        
-        errorView.isHidden = true
         self.gridView = false
         self.searchBar = UISearchBar()
         self.searchBar.sizeToFit()
@@ -49,16 +36,33 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         let layoutButton = UIBarButtonItem(image: UIImage(named: "grid-icon"), style: .plain, target: self, action: #selector(changeLayout))
         
         navigationItem.leftBarButtonItem = layoutButton
-
+        
         let textFieldSearchBar = self.searchBar.value(forKey: "searchField") as? UITextField
         textFieldSearchBar?.textColor = UIColor.red
         textFieldSearchBar?.backgroundColor = UIColor.black
         textFieldSearchBar?.tintColor = UIColor.red
         textFieldSearchBar?.attributedPlaceholder = NSAttributedString(string: "Search for a movie",
-                                                               attributes: [NSForegroundColorAttributeName: UIColor.red])
+                                                                       attributes: [NSForegroundColorAttributeName: UIColor.red])
         let glassIconView = textFieldSearchBar?.leftView as? UIImageView
         glassIconView?.image = glassIconView?.image?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         glassIconView?.tintColor = UIColor.red
+        if !isInternetAvailable() {
+            self.internetAvailable = false
+            movieTableView.isHidden = true
+            movieCollectionView.isHidden = true
+            errorView.isHidden = false
+            return
+        }
+        self.internetAvailable = true
+        movieTableView.dataSource = self
+        movieTableView.delegate = self
+        movieCollectionView.dataSource = self
+        movieCollectionView.delegate = self
+        movieCollectionView.isHidden = true
+        movieCollectionView!.contentInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        
+        errorView.isHidden = true
+
 
         let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
         let url = URL(string: "https://api.themoviedb.org/3/movie/\(self.endpoint)?api_key=\(apiKey)")
@@ -68,7 +72,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
             delegate: nil,
             delegateQueue: OperationQueue.main
         )
-
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(refreshControlAction(_:)), for: UIControlEvents.valueChanged)
         movieTableView.insertSubview(refreshControl, at: 0)
@@ -104,20 +107,25 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
             return false
         }
         self.movieTableView.reloadData()
+        self.movieCollectionView.reloadData()
     }
     
     func changeLayout(_ layoutButton: UIBarButtonItem) {
         if self.gridView {
             layoutButton.image = UIImage(named: "grid-icon")
-            self.movieCollectionView.isHidden = true
-            self.movieTableView.isHidden = false
+            if (self.internetAvailable) {
+                self.movieCollectionView.isHidden = true
+                self.movieTableView.isHidden = false
+            }
             self.gridView = false
         } else {
-            self.movieTableView.isHidden = true
-            self.movieCollectionView.isHidden = false
-            self.gridView = true
             layoutButton.image = UIImage(named: "list-icon")
-            self.movieCollectionView.reloadData()
+            if (self.internetAvailable) {
+                self.movieTableView.isHidden = true
+                self.movieCollectionView.isHidden = false
+            }
+            self.gridView = true
+            
         }
     }
     
@@ -199,7 +207,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                                         if imageResponse != nil {
                                             cell.posterView.alpha = 0.0
                                             cell.posterView.image = image
-                                            UIView.animate(withDuration: 0.5, animations: { () -> Void in
+                                            UIView.animate(withDuration: 0.8, animations: { () -> Void in
                                                 cell.posterView.alpha = 1.0
                                             }, completion: nil)
                                         } else {
@@ -208,6 +216,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         }, failure: { (imageRequest, imageResponse, error) -> Void in
             // do something for the failure condition
         })
+        cell.posterView.layer.masksToBounds = true
+        cell.posterView.layer.cornerRadius = 5
         print ("Row \(indexPath.row)")
         cell.isSelected = false
         return cell
@@ -227,6 +237,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         cell.overviewLabel.text = overview
         //cell.movieRatingLabel.updateOnTouch = false
         cell.movieRatingLabel.rating = Double(rating)
+        cell.movieRatingLabel.settings.updateOnTouch = false
         let baseUrl = "https://image.tmdb.org/t/p/w500/"
         let posterUrl = NSURL(string: baseUrl+posterPath)
         let posterUrlRequest = NSURLRequest(url: (posterUrl as URL?)!)
@@ -246,6 +257,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         }, failure: { (imageRequest, imageResponse, error) -> Void in
             // do something for the failure condition
         })
+        cell.posterView.layer.cornerRadius = 5.0
+        cell.posterView.clipsToBounds = true
         print ("Row \(indexPath.row)")
         cell.selectionStyle = .none
         return cell
@@ -271,6 +284,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                 movieTableView.deselectRow(at: indexPath, animated: true)
             }
         }
+        
     }
     
     /*
